@@ -13,11 +13,23 @@ class DriverScannerScreen extends StatefulWidget {
 
 class _DriverScannerScreenState extends State<DriverScannerScreen> {
   bool _isProcessing = false;
-  MobileScannerController cameraController = MobileScannerController();
+  late MobileScannerController cameraController;
 
   // Premium Colors (iOS Style)
   final Color darkBlue = const Color(0xFF0A1D37);
   final Color premiumGreen = const Color(0xFF00C7BE);
+
+  @override
+  void initState() {
+    super.initState();
+    cameraController = MobileScannerController();
+  }
+
+  @override
+  void dispose() {
+    cameraController.dispose();
+    super.dispose();
+  }
 
   Future<void> _processPayment(String studentId) async {
     if (_isProcessing) return;
@@ -26,43 +38,88 @@ class _DriverScannerScreenState extends State<DriverScannerScreen> {
     cameraController.stop();
 
     try {
-      DocumentSnapshot studentDoc = await FirebaseFirestore.instance
-          .collection('Users')
-          .doc(studentId)
-          .get();
+      final FirebaseFirestore firestore = FirebaseFirestore.instance;
+      const double ticketPrice = 120.0;
 
-      if (studentDoc.exists && studentDoc['role'] == 'student') {
-        String studentName = studentDoc['username'];
-        double currentBalance = (studentDoc['walletBalance'] ?? 0.0).toDouble();
-        double ticketPrice = 120.0;
+      // Use transaction to ensure atomicity - prevents double charging
+      await firestore.runTransaction((transaction) async {
+        final userRef = firestore.collection('Users').doc(studentId);
+        final snapshot = transaction.get(userRef);
 
-        if (currentBalance >= ticketPrice) {
-          await FirebaseFirestore.instance
-              .collection('Users')
-              .doc(studentId)
-              .update({'walletBalance': currentBalance - ticketPrice});
-          if (mounted) {
-            _showIosPopup(true, studentName, currentBalance - ticketPrice);
-          }
-        } else {
+        // Verify document exists and user is student
+        if (!snapshot.exists) {
+          throw Exception('Student not found');
+        }
+
+        final data = snapshot.data() as Map<String, dynamic>?;
+        if (data == null) {
+          throw Exception('Invalid student data');
+        }
+
+        final role = data['role'] as String?;
+        if (role != 'student') {
+          throw Exception('Not a valid student');
+        }
+
+        final studentName = data['username'] as String? ?? 'Unknown';
+        final currentBalance = (data['walletBalance'] as num? ?? 0.0)
+            .toDouble();
+
+        // Check balance
+        if (currentBalance < ticketPrice) {
           if (mounted) {
             _showIosPopup(false, studentName, currentBalance);
           }
+          throw Exception('Insufficient balance');
         }
-      } else {
+
+        // Create payment record BEFORE deducting balance (audit trail)
+        final paymentRef = firestore.collection('Payments').doc();
+        transaction.set(paymentRef, {
+          'studentId': studentId,
+          'studentName': studentName,
+          'amount': ticketPrice,
+          'timestamp': FieldValue.serverTimestamp(),
+          'status': 'completed',
+        });
+
+        // Deduct balance in same transaction (atomic operation)
+        transaction.update(userRef, {
+          'walletBalance': currentBalance - ticketPrice,
+        });
+
         if (mounted) {
-          _showInvalidQRPopup();
+          _showIosPopup(true, studentName, currentBalance - ticketPrice);
         }
-      }
+      });
     } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text('Error: $e')));
+      // Only show error if not already shown by transaction
+      if (mounted && !e.toString().contains('Insufficient balance')) {
+        _showError(e.toString());
       }
       cameraController.start();
       setState(() => _isProcessing = false);
     }
+  }
+
+  void _showError(String message) {
+    showCupertinoDialog(
+      context: context,
+      builder: (context) => CupertinoAlertDialog(
+        title: const Text('Payment Error'),
+        content: Text(message),
+        actions: [
+          CupertinoDialogAction(
+            child: const Text('Try Again'),
+            onPressed: () {
+              Navigator.pop(context);
+              cameraController.start();
+              setState(() => _isProcessing = false);
+            },
+          ),
+        ],
+      ),
+    );
   }
 
   // --- APPLE STYLE BLURRED POPUP ---

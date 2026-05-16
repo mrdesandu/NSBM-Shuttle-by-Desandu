@@ -69,14 +69,34 @@ class _StudentMapScreenState extends State<StudentMapScreen> {
   @override
   void initState() {
     super.initState();
-    _determinePosition();
-    _loadBusesForRoute(); // ස්ක්‍රීන් එක ලෝඩ් වෙද්දීම බස් ටික හොයනවා
+    _initializeScreen();
+  }
+
+  void _initializeScreen() {
+    _determinePosition()
+        .then((_) {
+          if (mounted) {
+            _loadBusesForRoute();
+          }
+        })
+        .catchError((e) {
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Location Error: $e'),
+                duration: const Duration(seconds: 2),
+              ),
+            );
+            // Still load buses with default location
+            _loadBusesForRoute();
+          }
+        });
   }
 
   // --- අදාළ Route එකට බස් පෙන්වීමේ Logic එක ---
   void _loadBusesForRoute() {
     // එවල තියෙන Location මොනවද බලමු
-    print(
+    debugPrint(
       "Searching buses from: ${widget.fromLocation} to: ${widget.toLocation}",
     );
 
@@ -134,31 +154,51 @@ class _StudentMapScreenState extends State<StudentMapScreen> {
   }
 
   Future<void> _determinePosition() async {
-    bool serviceEnabled;
-    LocationPermission permission;
+    try {
+      bool serviceEnabled;
+      LocationPermission permission;
 
-    serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) return Future.error('Location services are disabled.');
-
-    permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        return Future.error('Location permissions are denied');
+      serviceEnabled = await Geolocator.isLocationServiceEnabled();
+      if (!serviceEnabled) {
+        throw Exception('Location services are disabled. Please enable them.');
       }
+
+      permission = await Geolocator.checkPermission();
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+        if (permission == LocationPermission.denied) {
+          throw Exception('Location permissions are denied');
+        }
+      }
+
+      if (permission == LocationPermission.deniedForever) {
+        throw Exception(
+          'Location permissions are permanently denied. '
+          'Please enable them in app settings.',
+        );
+      }
+
+      Position position = await Geolocator.getCurrentPosition(
+        timeLimit: const Duration(seconds: 10),
+      );
+
+      if (!mounted) return;
+
+      final GoogleMapController controller = await _controller.future;
+      if (mounted) {
+        controller.animateCamera(
+          CameraUpdate.newCameraPosition(
+            CameraPosition(
+              target: LatLng(position.latitude, position.longitude),
+              zoom: 14.0,
+            ),
+          ),
+        );
+      }
+    } catch (e) {
+      debugPrint('Error determining position: $e');
+      rethrow;
     }
-
-    Position position = await Geolocator.getCurrentPosition();
-
-    final GoogleMapController controller = await _controller.future;
-    controller.animateCamera(
-      CameraUpdate.newCameraPosition(
-        CameraPosition(
-          target: LatLng(position.latitude, position.longitude),
-          zoom: 14.0,
-        ),
-      ),
-    );
   }
 
   @override

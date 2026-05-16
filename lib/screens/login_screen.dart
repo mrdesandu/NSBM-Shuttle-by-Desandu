@@ -23,6 +23,13 @@ class _LoginScreenState extends State<LoginScreen> {
   final Color darkBlue = const Color(0xFF0A1D37);
   final Color premiumGreen = const Color(0xFF00C7BE);
 
+  @override
+  void dispose() {
+    _usernameController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
   void _login() async {
     setState(() {
       _isLoading = true;
@@ -31,8 +38,18 @@ class _LoginScreenState extends State<LoginScreen> {
       String inputUsername = _usernameController.text.trim();
       String inputPassword = _passwordController.text.trim();
 
-      if (inputUsername.isEmpty || inputPassword.isEmpty) {
-        throw Exception("Please enter both Username and Password.");
+      // Validate input
+      if (inputUsername.isEmpty) {
+        throw Exception('Please enter your username');
+      }
+      if (inputPassword.isEmpty) {
+        throw Exception('Please enter your password');
+      }
+      if (inputUsername.length < 3) {
+        throw Exception('Username must be at least 3 characters');
+      }
+      if (inputPassword.length < 6) {
+        throw Exception('Password must be at least 6 characters');
       }
 
       // 1. Username එක database එකෙන් හොයනවා
@@ -80,12 +97,13 @@ class _LoginScreenState extends State<LoginScreen> {
         }
       }
     } catch (e) {
+      String errorMessage = _getLoginErrorMessage(e);
       if (mounted) {
         showCupertinoDialog(
           context: context,
           builder: (context) => CupertinoAlertDialog(
             title: const Text('Login Failed'),
-            content: Text(e.toString().replaceAll('Exception: ', '')),
+            content: Text(errorMessage),
             actions: [
               CupertinoDialogAction(
                 child: const Text('OK'),
@@ -99,6 +117,32 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() {
       _isLoading = false;
     });
+  }
+
+  String _getLoginErrorMessage(dynamic e) {
+    if (e is FirebaseAuthException) {
+      switch (e.code) {
+        case 'user-not-found':
+          return 'Username not found. Please check or sign up for a new account.';
+        case 'wrong-password':
+          return 'Incorrect password. Please try again.';
+        case 'user-disabled':
+          return 'This account has been disabled. Contact support.';
+        case 'invalid-email':
+          return 'Invalid email format. Please try again.';
+        case 'too-many-requests':
+          return 'Too many failed login attempts. Please try again later.';
+        case 'network-request-failed':
+          return 'Network error. Please check your internet connection.';
+        default:
+          return 'Login failed. Please try again.';
+      }
+    } else if (e is Exception) {
+      final message = e.toString().replaceAll('Exception: ', '');
+      return message;
+    }
+    return 'An unexpected error occurred.';
+  }
   }
 
   @override
