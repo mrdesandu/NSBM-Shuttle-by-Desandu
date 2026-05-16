@@ -143,7 +143,6 @@ class _LoginScreenState extends State<LoginScreen> {
     }
     return 'An unexpected error occurred.';
   }
-  }
 
   @override
   Widget build(BuildContext context) {

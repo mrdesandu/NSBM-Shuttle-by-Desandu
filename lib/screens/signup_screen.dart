@@ -177,7 +177,6 @@ class _SignupScreenState extends State<SignupScreen> {
     }
     return 'An unexpected error occurred.';
   }
-  }
 
   void _showError(String message) {
     if (mounted) {

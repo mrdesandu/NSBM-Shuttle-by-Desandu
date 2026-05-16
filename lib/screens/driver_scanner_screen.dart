@@ -42,16 +42,16 @@ class _DriverScannerScreenState extends State<DriverScannerScreen> {
       const double ticketPrice = 120.0;
 
       // Use transaction to ensure atomicity - prevents double charging
-      await firestore.runTransaction((transaction) async {
+      await firestore.runTransaction<void>((transaction) async {
         final userRef = firestore.collection('Users').doc(studentId);
-        final snapshot = transaction.get(userRef);
+        final snapshot = await transaction.get(userRef);
 
         // Verify document exists and user is student
         if (!snapshot.exists) {
           throw Exception('Student not found');
         }
 
-        final data = snapshot.data() as Map<String, dynamic>?;
+        final data = snapshot.data();
         if (data == null) {
           throw Exception('Invalid student data');
         }
@@ -251,26 +251,6 @@ class _DriverScannerScreenState extends State<DriverScannerScreen> {
             ),
           ),
         ),
-      ),
-    );
-  }
-
-  void _showInvalidQRPopup() {
-    showCupertinoDialog(
-      context: context,
-      builder: (context) => CupertinoAlertDialog(
-        title: const Text('Invalid QR Code'),
-        content: const Text('This is not a valid NSBM Shuttle code.'),
-        actions: [
-          CupertinoDialogAction(
-            child: const Text('Try Again'),
-            onPressed: () {
-              Navigator.pop(context);
-              cameraController.start();
-              setState(() => _isProcessing = false);
-            },
-          ),
-        ],
       ),
     );
   }
