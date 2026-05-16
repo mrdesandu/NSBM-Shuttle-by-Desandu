@@ -1,4 +1,4 @@
-import 'dart:ui';
+﻿import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
@@ -61,8 +61,8 @@ class _DriverScannerScreenState extends State<DriverScannerScreen> {
           throw Exception('Not a valid student');
         }
 
-        final studentName = data['username'] as String? ?? 'Unknown';
-        final currentBalance = (data['walletBalance'] as num? ?? 0.0)
+        final studentName = (data['username'] as String?) ?? 'Unknown';
+        final currentBalance = ((data['walletBalance'] as num?) ?? 0.0)
             .toDouble();
 
         // Check balance
@@ -401,3 +401,4 @@ class _DriverScannerScreenState extends State<DriverScannerScreen> {
     );
   }
 }
+

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart'; // iOS style icons walata
@@ -91,11 +91,11 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         color: Colors.white,
-                        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 20, offset: const Offset(0, 10))]
+                        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 20, offset: const Offset(0, 10))]
                       ),
                       child: CircleAvatar(
                         radius: 55, 
-                        backgroundColor: premiumGreen.withOpacity(0.1), 
+                        backgroundColor: premiumGreen.withValues(alpha: 0.1), 
                         child: Icon(CupertinoIcons.person_solid, size: 55, color: premiumGreen)
                       ),
                     ),
@@ -128,7 +128,7 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                   decoration: BoxDecoration(
                     color: cardWhite, 
                     borderRadius: BorderRadius.circular(20), 
-                    boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.03), blurRadius: 15, offset: const Offset(0, 5))]
+                    boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.03), blurRadius: 15, offset: const Offset(0, 5))]
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -137,7 +137,7 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                         children: [
                           Container(
                             padding: const EdgeInsets.all(12),
-                            decoration: BoxDecoration(color: premiumGreen.withOpacity(0.1), borderRadius: BorderRadius.circular(15)),
+                            decoration: BoxDecoration(color: premiumGreen.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(15)),
                             child: Icon(CupertinoIcons.creditcard_fill, color: premiumGreen, size: 24),
                           ),
                           const SizedBox(width: 15),
@@ -174,7 +174,7 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                 decoration: BoxDecoration(
                   color: cardWhite, 
                   borderRadius: BorderRadius.circular(20), 
-                  boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.02), blurRadius: 10, offset: const Offset(0, 5))]
+                  boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 10, offset: const Offset(0, 5))]
                 ),
                 child: Column(
                   children: [
@@ -197,7 +197,7 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                   style: TextButton.styleFrom(
                     backgroundColor: Colors.white,
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-                    shadowColor: Colors.black.withOpacity(0.05),
+                    shadowColor: Colors.black.withValues(alpha: 0.05),
                     elevation: 2,
                   ),
                   onPressed: _logout,

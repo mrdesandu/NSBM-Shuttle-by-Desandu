@@ -1,4 +1,4 @@
-import 'dart:async';
+﻿import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
@@ -7,7 +7,7 @@ class StudentMapScreen extends StatefulWidget {
   final String? fromLocation;
   final String? toLocation;
 
-  // Home Screen එකෙන් එවන දත්ත ගන්න මේක හැදුවා
+  // Home Screen à¶‘à¶šà·™à¶±à·Š à¶‘à·€à¶± à¶¯à¶­à·Šà¶­ à¶œà¶±à·Šà¶± à¶¸à·šà¶š à·„à·à¶¯à·”à·€à·
   const StudentMapScreen({super.key, this.fromLocation, this.toLocation});
 
   @override
@@ -17,11 +17,11 @@ class StudentMapScreen extends StatefulWidget {
 class _StudentMapScreenState extends State<StudentMapScreen> {
   final Completer<GoogleMapController> _controller = Completer();
 
-  // සිතියමේ පෙන්වන බස් (Markers) ටික දාන්න Set එකක්
+  // à·ƒà·’à¶­à·’à¶ºà¶¸à·š à¶´à·™à¶±à·Šà·€à¶± à¶¶à·ƒà·Š (Markers) à¶§à·’à¶š à¶¯à·à¶±à·Šà¶± Set à¶‘à¶šà¶šà·Š
   final Set<Marker> _busMarkers = {};
 
   static const CameraPosition _initialPosition = CameraPosition(
-    target: LatLng(6.8213, 80.0416), // NSBM එකේ Location එක
+    target: LatLng(6.8213, 80.0416), // NSBM à¶‘à¶šà·š Location à¶‘à¶š
     zoom: 14.4746,
   );
 
@@ -93,15 +93,15 @@ class _StudentMapScreenState extends State<StudentMapScreen> {
         });
   }
 
-  // --- අදාළ Route එකට බස් පෙන්වීමේ Logic එක ---
+  // --- à¶…à¶¯à·à·… Route à¶‘à¶šà¶§ à¶¶à·ƒà·Š à¶´à·™à¶±à·Šà·€à·“à¶¸à·š Logic à¶‘à¶š ---
   void _loadBusesForRoute() {
-    // එවල තියෙන Location මොනවද බලමු
+    // à¶‘à·€à¶½ à¶­à·’à¶ºà·™à¶± Location à¶¸à·œà¶±à·€à¶¯ à¶¶à¶½à¶¸à·”
     debugPrint(
       "Searching buses from: ${widget.fromLocation} to: ${widget.toLocation}",
     );
 
-    // මෙතනදී අපි දැනට Dummy Data ටිකක් දාමු බස් පෙන්වන්න.
-    // (පස්සේ මේක Firebase එකෙන් බස් වල ඇත්ත Live Location අරන් දාන්න පුළුවන්)
+    // à¶¸à·™à¶­à¶±à¶¯à·“ à¶…à¶´à·’ à¶¯à·à¶±à¶§ Dummy Data à¶§à·’à¶šà¶šà·Š à¶¯à·à¶¸à·” à¶¶à·ƒà·Š à¶´à·™à¶±à·Šà·€à¶±à·Šà¶±.
+    // (à¶´à·ƒà·Šà·ƒà·š à¶¸à·šà¶š Firebase à¶‘à¶šà·™à¶±à·Š à¶¶à·ƒà·Š à·€à¶½ à¶‡à¶­à·Šà¶­ Live Location à¶…à¶»à¶±à·Š à¶¯à·à¶±à·Šà¶± à¶´à·”à·…à·”à·€à¶±à·Š)
 
     if (widget.toLocation == 'Makumbura (MMC)' ||
         widget.fromLocation == 'Makumbura (MMC)') {
@@ -109,20 +109,23 @@ class _StudentMapScreenState extends State<StudentMapScreen> {
         _busMarkers.add(
           Marker(
             markerId: const MarkerId('bus_1'),
-            position: const LatLng(6.8250, 80.0400), // NSBM කිට්ටුව
+            position: const LatLng(
+              6.8250,
+              80.0400,
+            ), // NSBM à¶šà·’à¶§à·Šà¶§à·”à·€
             infoWindow: const InfoWindow(
               title: 'Bus 1',
               snippet: 'To Makumbura',
             ),
             icon: BitmapDescriptor.defaultMarkerWithHue(
               BitmapDescriptor.hueGreen,
-            ), // කොළ පාට කටුවක්
+            ), // à¶šà·œà·… à¶´à·à¶§ à¶šà¶§à·”à·€à¶šà·Š
           ),
         );
         _busMarkers.add(
           Marker(
             markerId: const MarkerId('bus_2'),
-            position: const LatLng(6.8350, 80.0250), // පාර මැද
+            position: const LatLng(6.8350, 80.0250), // à¶´à·à¶» à¶¸à·à¶¯
             infoWindow: const InfoWindow(
               title: 'Bus 2',
               snippet: 'To Makumbura',
@@ -139,14 +142,17 @@ class _StudentMapScreenState extends State<StudentMapScreen> {
         _busMarkers.add(
           Marker(
             markerId: const MarkerId('bus_3'),
-            position: const LatLng(6.8500, 80.0100), // කොළඹ පාරේ
+            position: const LatLng(
+              6.8500,
+              80.0100,
+            ), // à¶šà·œà·…à¶¹ à¶´à·à¶»à·š
             infoWindow: const InfoWindow(
               title: 'Bus 3',
               snippet: 'To Colombo Fort',
             ),
             icon: BitmapDescriptor.defaultMarkerWithHue(
               BitmapDescriptor.hueBlue,
-            ), // නිල් පාට කටුවක්
+            ), // à¶±à·’à¶½à·Š à¶´à·à¶§ à¶šà¶§à·”à·€à¶šà·Š
           ),
         );
       });
@@ -179,7 +185,9 @@ class _StudentMapScreenState extends State<StudentMapScreen> {
       }
 
       Position position = await Geolocator.getCurrentPosition(
-        timeLimit: const Duration(seconds: 10),
+        locationSettings: const LocationSettings(
+          accuracy: LocationAccuracy.high,
+        ),
       );
 
       if (!mounted) return;
@@ -218,12 +226,11 @@ class _StudentMapScreenState extends State<StudentMapScreen> {
         initialCameraPosition: _initialPosition,
         myLocationEnabled: true,
         myLocationButtonEnabled: true,
-        markers: _busMarkers, // හදපු බස් ටික මැප් එකට දානවා
+        style: _mapStyle,
+        markers:
+            _busMarkers, // à·„à¶¯à¶´à·" à¶¶à·ƒà·Š à¶§à·'à¶š à¶¸à·à¶´à·Š à¶'à¶šà¶§ à¶¯à·à¶±à·€à·
         onMapCreated: (GoogleMapController controller) {
           _controller.complete(controller);
-
-          // --- මෙතනින් තමයි අලුත් Theme එක මැප් එකට දාන්නේ ---
-          controller.setMapStyle(_mapStyle);
         },
       ),
     );

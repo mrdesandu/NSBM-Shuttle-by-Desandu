@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
@@ -19,8 +19,7 @@ class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _idController =
-      TextEditingController(); // NIC hari Student ID hari gahanna meka thamai use wenne
+  final TextEditingController _idController = TextEditingController();
 
   bool _isLoading = false;
   String _selectedRole = 'student';
@@ -73,8 +72,9 @@ class _SignupScreenState extends State<SignupScreen> {
 
       // Validate email
       if (email.isEmpty ||
-          !RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$')
-              .hasMatch(email)) {
+          !RegExp(
+            r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
+          ).hasMatch(email)) {
         _showError('Please enter a valid email address');
         return;
       }
@@ -105,14 +105,16 @@ class _SignupScreenState extends State<SignupScreen> {
         _isLoading = true;
       });
 
-      UserCredential userCredential = await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(
-            email: email,
-            password: password,
-          );
+      final userCredential = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(email: email, password: password);
+      final userId = userCredential.user?.uid;
+
+      if (userId == null) {
+        throw Exception('Failed to create user account');
+      }
 
       // Database eke data tika structure karanawa
-      Map<String, dynamic> userData = {
+      final userData = <String, dynamic>{
         'firstName': firstName,
         'lastName': lastName,
         'username': username,
@@ -130,7 +132,7 @@ class _SignupScreenState extends State<SignupScreen> {
 
       await FirebaseFirestore.instance
           .collection('Users')
-          .doc(userCredential.user!.uid)
+          .doc(userId)
           .set(userData);
 
       if (mounted) {
@@ -218,7 +220,7 @@ class _SignupScreenState extends State<SignupScreen> {
               width: 300,
               height: 300,
               decoration: BoxDecoration(
-                color: darkBlue.withOpacity(0.1),
+                color: darkBlue.withValues(alpha: 0.1),
                 shape: BoxShape.circle,
               ),
             ),
@@ -230,7 +232,7 @@ class _SignupScreenState extends State<SignupScreen> {
               width: 250,
               height: 250,
               decoration: BoxDecoration(
-                color: premiumGreen.withOpacity(0.15),
+                color: premiumGreen.withValues(alpha: 0.15),
                 shape: BoxShape.circle,
               ),
             ),
@@ -288,12 +290,12 @@ class _SignupScreenState extends State<SignupScreen> {
                         Container(
                           padding: const EdgeInsets.all(25),
                           decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.8),
+                            color: Colors.white.withValues(alpha: 0.8),
                             borderRadius: BorderRadius.circular(30),
                             border: Border.all(color: Colors.white),
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.black.withOpacity(0.03),
+                                color: Colors.black.withValues(alpha: 0.03),
                                 blurRadius: 20,
                                 offset: const Offset(0, 10),
                               ),
@@ -484,3 +486,4 @@ class _SignupScreenState extends State<SignupScreen> {
     );
   }
 }
+

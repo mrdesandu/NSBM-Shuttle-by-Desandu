@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart'; // iOS style icons
@@ -144,7 +144,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                   borderRadius: BorderRadius.circular(25),
                   boxShadow: [
                     BoxShadow(
-                      color: darkBlue.withOpacity(0.3),
+                      color: darkBlue.withValues(alpha: 0.3),
                       blurRadius: 20,
                       offset: const Offset(0, 10),
                     ),
@@ -189,7 +189,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                               vertical: 4,
                             ),
                             decoration: BoxDecoration(
-                              color: premiumGreen.withOpacity(0.2),
+                              color: premiumGreen.withValues(alpha: 0.2),
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: Text(
@@ -230,7 +230,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                   borderRadius: BorderRadius.circular(20),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.02),
+                      color: Colors.black.withValues(alpha: 0.02),
                       blurRadius: 10,
                       offset: const Offset(0, 5),
                     ),
@@ -324,7 +324,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                   borderRadius: BorderRadius.circular(20),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.03),
+                      color: Colors.black.withValues(alpha: 0.03),
                       blurRadius: 10,
                       offset: const Offset(0, 5),
                     ),
@@ -399,3 +399,4 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
     );
   }
 }
+

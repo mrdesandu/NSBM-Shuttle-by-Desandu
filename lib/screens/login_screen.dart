@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
@@ -52,8 +52,8 @@ class _LoginScreenState extends State<LoginScreen> {
         throw Exception('Password must be at least 6 characters');
       }
 
-      // 1. Username එක database එකෙන් හොයනවා
-      QuerySnapshot userQuery = await FirebaseFirestore.instance
+      // 1. Username à¶‘à¶š database à¶‘à¶šà·™à¶±à·Š à·„à·œà¶ºà¶±à·€à·
+      final userQuery = await FirebaseFirestore.instance
           .collection('Users')
           .where('username', isEqualTo: inputUsername)
           .limit(1)
@@ -63,26 +63,31 @@ class _LoginScreenState extends State<LoginScreen> {
         throw Exception("Username not found! Please check again or Sign Up.");
       }
 
-      // 2. Data එක ගන්න කලින් ඒකේ 'email' තියෙනවද කියලා බලනවා (පරණ accounts වලදී crash වෙන්නෙ නැති වෙන්න)
-      var userData = userQuery.docs.first.data() as Map<String, dynamic>;
+      // 2. Data à¶‘à¶š à¶œà¶±à·Šà¶± à¶šà¶½à·’à¶±à·Š à¶’à¶šà·š 'email' à¶­à·’à¶ºà·™à¶±à·€à¶¯ à¶šà·’à¶ºà¶½à· à¶¶à¶½à¶±à·€à·
+      final userData = userQuery.docs.first.data() as Map<String, dynamic>?;
 
-      if (!userData.containsKey('email') ||
-          userData['email'].toString().isEmpty) {
+      if (userData == null) {
         throw Exception(
           "This is an old account. Please create a New Account with a DIFFERENT username.",
         );
       }
 
-      String userEmail = userData['email'];
-      String role = userData['role'] ?? 'student';
+      final userEmail = userData['email'] as String?;
+      if (userEmail == null || userEmail.isEmpty) {
+        throw Exception(
+          "This is an old account. Please create a New Account with a DIFFERENT username.",
+        );
+      }
 
-      // 3. Firebase login වෙනවා
+      final role = userData['role'] as String? ?? 'student';
+
+      // 3. Firebase login à·€à·™à¶±à·€à·
       await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: userEmail,
         password: inputPassword,
       );
 
-      // 4. Role එක අනුව Screen එකට යනවා
+      // 4. Role à¶‘à¶š à¶…à¶±à·”à·€ Screen à¶‘à¶šà¶§ à¶ºà¶±à·€à·
       if (mounted) {
         if (role == 'driver') {
           Navigator.pushReplacement(
@@ -168,7 +173,7 @@ class _LoginScreenState extends State<LoginScreen> {
               width: 300,
               height: 300,
               decoration: BoxDecoration(
-                color: premiumGreen.withOpacity(0.1),
+                color: premiumGreen.withValues(alpha: 0.1),
                 shape: BoxShape.circle,
               ),
             ),
@@ -180,7 +185,7 @@ class _LoginScreenState extends State<LoginScreen> {
               width: 250,
               height: 250,
               decoration: BoxDecoration(
-                color: darkBlue.withOpacity(0.05),
+                color: darkBlue.withValues(alpha: 0.05),
                 shape: BoxShape.circle,
               ),
             ),
@@ -208,7 +213,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         shape: BoxShape.circle,
                         boxShadow: [
                           BoxShadow(
-                            color: premiumGreen.withOpacity(0.2),
+                            color: premiumGreen.withValues(alpha: 0.2),
                             blurRadius: 30,
                             offset: const Offset(0, 10),
                           ),
@@ -246,12 +251,12 @@ class _LoginScreenState extends State<LoginScreen> {
                     Container(
                       padding: const EdgeInsets.all(25),
                       decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.8),
+                        color: Colors.white.withValues(alpha: 0.8),
                         borderRadius: BorderRadius.circular(30),
                         border: Border.all(color: Colors.white),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withOpacity(0.03),
+                            color: Colors.black.withValues(alpha: 0.03),
                             blurRadius: 20,
                             offset: const Offset(0, 10),
                           ),
@@ -389,3 +394,4 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 }
+

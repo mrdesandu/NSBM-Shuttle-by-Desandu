@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart'; // iOS Icons
@@ -90,7 +90,7 @@ class _StudentWalletScreenState extends State<StudentWalletScreen> {
                   borderRadius: BorderRadius.circular(25),
                   boxShadow: [
                     BoxShadow(
-                      color: darkBlue.withOpacity(0.3),
+                      color: darkBlue.withValues(alpha: 0.3),
                       blurRadius: 20,
                       offset: const Offset(0, 10),
                     ),
@@ -113,7 +113,7 @@ class _StudentWalletScreenState extends State<StudentWalletScreen> {
                         ),
                         Icon(
                           CupertinoIcons.creditcard_fill,
-                          color: premiumGreen.withOpacity(0.8),
+                          color: premiumGreen.withValues(alpha: 0.8),
                           size: 28,
                         ),
                       ],
@@ -148,7 +148,7 @@ class _StudentWalletScreenState extends State<StudentWalletScreen> {
                     borderRadius: BorderRadius.circular(30),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.03),
+                        color: Colors.black.withValues(alpha: 0.03),
                         blurRadius: 20,
                         offset: const Offset(0, 10),
                       ),
@@ -179,7 +179,10 @@ class _StudentWalletScreenState extends State<StudentWalletScreen> {
                             ? QrImageView(
                                 data: studentId,
                                 size: 160,
-                                foregroundColor: darkBlue,
+                                dataModuleStyle: QrDataModuleStyle(
+                                  dataModuleShape: QrDataModuleShape.square,
+                                  color: darkBlue,
+                                ),
                               )
                             : const SizedBox(
                                 height: 160,
@@ -227,7 +230,7 @@ class _StudentWalletScreenState extends State<StudentWalletScreen> {
                   borderRadius: BorderRadius.circular(20),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.02),
+                      color: Colors.black.withValues(alpha: 0.02),
                       blurRadius: 10,
                       offset: const Offset(0, 5),
                     ),
@@ -285,7 +288,7 @@ class _StudentWalletScreenState extends State<StudentWalletScreen> {
           Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-              color: amountColor.withOpacity(0.1),
+              color: amountColor.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(12),
             ),
             child: Icon(icon, color: amountColor, size: 22),

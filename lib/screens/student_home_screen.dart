@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
@@ -107,15 +107,15 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
     return GestureDetector(
       onTap: () {
         setState(() => _selectedRoute = title);
-        Navigator.pop(context); // Menu එක වහනවා
+        Navigator.pop(context); // Menu à¶‘à¶š à·€à·„à¶±à·€à·
       },
       child: Container(
         margin: const EdgeInsets.only(bottom: 12),
         padding: const EdgeInsets.all(18),
         decoration: BoxDecoration(
           color: isSelected
-              ? premiumGreen.withOpacity(0.1)
-              : iosBg.withOpacity(0.5),
+              ? premiumGreen.withValues(alpha: 0.1)
+              : iosBg.withValues(alpha: 0.5),
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
             color: isSelected ? premiumGreen : Colors.transparent,
@@ -170,7 +170,7 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
               width: 250,
               height: 250,
               decoration: BoxDecoration(
-                color: premiumGreen.withOpacity(0.1),
+                color: premiumGreen.withValues(alpha: 0.1),
                 shape: BoxShape.circle,
               ),
             ),
@@ -220,7 +220,7 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                             shape: BoxShape.circle,
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.black.withOpacity(0.05),
+                                color: Colors.black.withValues(alpha: 0.05),
                                 blurRadius: 10,
                               ),
                             ],
@@ -252,7 +252,7 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                           borderRadius: BorderRadius.circular(30),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withOpacity(0.03),
+                              color: Colors.black.withValues(alpha: 0.03),
                               blurRadius: 20,
                               offset: const Offset(0, 10),
                             ),
@@ -301,7 +301,7 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                               border: Border.all(color: Colors.grey.shade100),
                               boxShadow: [
                                 BoxShadow(
-                                  color: Colors.black.withOpacity(0.05),
+                                  color: Colors.black.withValues(alpha: 0.05),
                                   blurRadius: 10,
                                 ),
                               ],
@@ -334,7 +334,7 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                   // --- FIND BUSES BUTTON ---
                   GestureDetector(
                     onTap: () {
-                      // මෙතනින් තමයි Map එකට තෝරපු Location ටික යවන්නේ
+                      // à¶¸à·™à¶­à¶±à·’à¶±à·Š à¶­à¶¸à¶ºà·’ Map à¶‘à¶šà¶§ à¶­à·à¶»à¶´à·” Location à¶§à·’à¶š à¶ºà·€à¶±à·Šà¶±à·š
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -355,7 +355,7 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                         borderRadius: BorderRadius.circular(22),
                         boxShadow: [
                           BoxShadow(
-                            color: premiumGreen.withOpacity(0.3),
+                            color: premiumGreen.withValues(alpha: 0.3),
                             blurRadius: 20,
                             offset: const Offset(0, 10),
                           ),
@@ -389,7 +389,7 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
         type: BottomNavigationBarType.fixed,
         onTap: (index) {
           if (index == 1) {
-            // යට Nav bar එකෙන් ගියත් Location යවනවා
+            // à¶ºà¶§ Nav bar à¶‘à¶šà·™à¶±à·Š à¶œà·’à¶ºà¶­à·Š Location à¶ºà·€à¶±à·€à·
             Navigator.push(
               context,
               MaterialPageRoute(
@@ -512,3 +512,4 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
     );
   }
 }
+
