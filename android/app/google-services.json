@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "653621442056",
+    "project_id": "nsbm-shuttle-app-desandu",
+    "storage_bucket": "nsbm-shuttle-app-desandu.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:653621442056:android:a201893f16192cdb5ac3bd",
+        "android_client_info": {
+          "package_name": "com.example.nsbm_shuttle"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDNQsRPHK1RL21dAVwQgY6dLH7VU5BmYYI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

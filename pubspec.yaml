@@ -1,0 +1,39 @@
+name: nsbm_shuttle
+description: "A new Flutter project."
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.11.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.8
+  firebase_core: ^4.6.0
+  firebase_auth: ^6.3.0
+  cloud_firestore: ^6.2.0
+  
+  # Google Maps වැඩ කරන්න මේක අනිවාර්යයෙන්ම ඕනේ
+  google_maps_flutter: ^2.10.0  
+  
+  # ලොකේෂන් ගන්න මේක ඕනේ
+  geolocator: ^13.0.2
+
+  # QR සහ Scanner වැඩ වලට මේවා තියන්න
+  qr_flutter: ^4.1.0
+  mobile_scanner: ^7.2.0
+
+  # පරණ flutter_map එක ඕනේ නැත්නම් අයින් කරන්න පුළුවන්
+  # flutter_map: any 
+  # latlong2: any
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true
